@@ -33,7 +33,7 @@ impl ASTNode {
     }
 }
 
-struct ASTBuilder {
+pub struct ASTBuilder {
     input: VecDeque<TokenKind>,
     output: Vec<ASTNode>,
     operator_aux: Vec<Operator>,
@@ -53,7 +53,7 @@ impl From<TokenKind> for Operator {
 }
 
 #[derive(Debug, Clone, Copy)]
-struct BadTokenError;
+pub struct BadTokenError;
 
 impl ASTBuilder {
     pub fn new(input: VecDeque<TokenKind>) -> Self {
