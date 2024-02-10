@@ -33,11 +33,6 @@ impl ASTNode {
     }
 }
 
-enum StepResult {
-    Stepped,
-    Not, // Input queue is empty
-}
-
 struct ASTBuilder {
     input: VecDeque<TokenKind>,
     output: Vec<ASTNode>,
