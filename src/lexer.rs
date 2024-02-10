@@ -43,7 +43,11 @@ impl Lexer {
             '(' => TokenKind::LParen,
             ')' => TokenKind::RParen,
             '0'..='9' => {
-                let num_str = self.remaining.chars().take_while(|c| *c == '.' || c.is_digit(10)).collect::<String>();
+                let num_str = self
+                    .remaining
+                    .chars()
+                    .take_while(|c| *c == '.' || c.is_digit(10))
+                    .collect::<String>();
                 eaten_chars = num_str.chars().count();
 
                 TokenKind::Literal(num_str.parse::<f64>().unwrap())
@@ -52,7 +56,7 @@ impl Lexer {
         };
 
         self.remaining = self.remaining[eaten_chars..].to_string();
-        
+
         Ok(Some(result))
     }
 }
@@ -95,7 +99,7 @@ mod tests {
         while let Some(token) = lx.next_token().unwrap() {
             token_vec.push(token);
         }
-        
+
         assert_eq!(token_vec, [Literal(103.56)])
     }
 
@@ -106,8 +110,20 @@ mod tests {
         while let Some(token) = lx.next_token().unwrap() {
             token_vec.push(token);
         }
-        
-        assert_eq!(token_vec, [Literal(56.5), Plus, LParen, Literal(67.0), Minus, Literal(8.0), RParen, Exp, Literal(5.0)])
+
+        assert_eq!(
+            token_vec,
+            [
+                Literal(56.5),
+                Plus,
+                LParen,
+                Literal(67.0),
+                Minus,
+                Literal(8.0),
+                RParen,
+                Exp,
+                Literal(5.0)
+            ]
+        )
     }
 }
-
