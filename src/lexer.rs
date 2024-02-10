@@ -66,6 +66,16 @@ mod tests {
     }
 
     #[test]
+    #[should_panic]
+    fn test_err() {
+        let mut lx = Lexer::new("asbd");
+        let mut token_vec = Vec::new();
+        while let Some(token) = lx.next_token().unwrap() {
+            token_vec.push(token);
+        }
+    }
+
+    #[test]
     fn test_operators() {
         let mut lx = Lexer::new("+-/*^()");
         let mut token_vec = Vec::new();
