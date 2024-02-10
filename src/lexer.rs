@@ -1,4 +1,6 @@
-#[derive(Debug, PartialEq)]
+use crate::parser::Operator;
+
+#[derive(Debug, PartialEq, Clone, Copy)]
 pub enum TokenKind {
     Literal(f64),
     Plus,
@@ -10,7 +12,7 @@ pub enum TokenKind {
     RParen,
 }
 
-#[derive(Debug, PartialEq)]
+#[derive(Debug, PartialEq, Clone)]
 pub struct ParseError;
 
 pub struct Lexer {
