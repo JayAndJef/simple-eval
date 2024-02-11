@@ -1,4 +1,3 @@
-use crate::parser::Operator;
 
 #[derive(Debug, PartialEq, Clone, Copy)]
 pub enum TokenKind {
