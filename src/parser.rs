@@ -73,6 +73,8 @@ impl ASTBuilder {
             self.build_node()?;
         }
 
+        // dbg!(&self.operator_aux, &self.input, &self.output);
+
         Ok(self.output.pop().unwrap())
     }
 
@@ -91,13 +93,16 @@ impl ASTBuilder {
                             // higher precedence
                             self.operator_aux.push(input_head.into());
                         } else {
-                            while (*self.operator_aux.last().unwrap() as i32)
+                            while self.operator_aux.last().is_some() && (*self.operator_aux.last().unwrap() as i32)
                                 - (Operator::from(input_head) as i32)
-                                < 2
+                                >= 2
                             {
                                 // while precedence is lower or equal
+                                // dbg!("hit lower!", input_head);
                                 self.build_node()?;
+                                // dbg!(&self.operator_aux, &self.input, &self.output, input_head);
                             }
+                            self.operator_aux.push(input_head.into());
                         }
                     }
                     None => self.operator_aux.push(input_head.into()),
@@ -187,6 +192,31 @@ pub mod tests {
                     right: Box::new(ASTNode::Leaf(4.0)),
                     operator: Operator::Mul
                 }),
+                operator: Add
+            }
+        )
+    }
+
+    #[test]
+    fn test_order_of_op() {
+        let ast = ASTBuilder::new(VecDeque::from([
+            Literal(2.0),
+            TokenKind::Mul,
+            Literal(2.0),
+            Plus,
+            Literal(5.0),
+        ]))
+        .build_ast()
+        .unwrap();
+        assert_eq!(
+            ast,
+            ASTNode::Branch {
+                left: Box::new(ASTNode::Branch {
+                    left: Box::new(ASTNode::Leaf(2.0)),
+                    right: Box::new(ASTNode::Leaf(2.0)),
+                    operator: Operator::Mul
+                }),
+                right: Box::new(ASTNode::Leaf(5.0)),
                 operator: Add
             }
         )
